@@ -47,6 +47,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import MicroInteraction from '../common/MicroInteraction';
 import GenerationProgress from './GenerationProgress';
 import { default as AlgorithmSettingsComponent } from './AlgorithmSettings';
+import { PaymentMethod } from '../../models/Order';
 
 const Grid = styled('div')<any>({
   display: 'grid',
@@ -70,7 +71,7 @@ interface GenerationEntry {
   id: string;
   date: Date | null;
   targetAmount: string;
-  paymentMethod: 'cash' | 'card' | 'both';
+  paymentMethod: PaymentMethod;
   templateIds: string[];
 }
 

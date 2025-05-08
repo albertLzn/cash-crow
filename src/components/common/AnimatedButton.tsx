@@ -3,7 +3,6 @@ import { Button, ButtonProps, alpha, styled } from '@mui/material';
 import { motion } from 'framer-motion';
 import { useAppTheme } from '../../context/ThemeContext';
 
-// Wrapper pour le bouton avec Framer Motion
 const MotionButtonWrapper = styled(motion.div)(({ theme }) => ({
   position: 'relative',
   display: 'inline-block',
@@ -11,7 +10,6 @@ const MotionButtonWrapper = styled(motion.div)(({ theme }) => ({
   overflow: 'hidden',
 }));
 
-// Effet de halo animé
 const Halo = styled(motion.div)(({ theme }) => ({
   position: 'absolute',
   top: 0,
@@ -42,7 +40,6 @@ const AnimatedButton: React.FC<AnimatedButtonProps> = ({
   const { animationIntensity } = useAppTheme();
   const [isHovered, setIsHovered] = useState(false);
   
-  // Ajuster les animations en fonction de l'intensité
   const getAnimationDuration = () => {
     switch (animationIntensity) {
       case 'low': return 0.4;
@@ -51,20 +48,17 @@ const AnimatedButton: React.FC<AnimatedButtonProps> = ({
     }
   };
 
-  // Variantes pour les animations du bouton
   const buttonVariants = {
     initial: { scale: 1 },
     hover: { scale: hoverScale },
     tap: { scale: tapScale },
   };
 
-  // Variantes pour l'effet de halo
   const haloVariants = {
     initial: { opacity: 0 },
     hover: { opacity: 0.6, scale: 1.2 },
   };
 
-  // Variantes pour l'effet de pulsation
   const pulseVariants = {
     initial: { scale: 1 },
     pulse: {

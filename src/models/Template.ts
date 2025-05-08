@@ -1,19 +1,27 @@
+import { PaymentMethod } from "./Order";
+
 export interface OrderTemplate {
     id: string;
     amount: number;
     frequency: number;
     description?: string;
+    paymentMethod: PaymentMethod;
+  
   }
   
   export interface Template {
     id: string;
     name: string;
     date: string;
-    paymentMethod: 'cash' | 'card' | 'both';
+    paymentMethod: PaymentMethod;
     totalAmount: number;
     orders: OrderTemplate[];
     createdAt: string;
     updatedAt: string;
+    maxCashAmount?: number;
+    minCardAmount?: number;
+    maxOperationsPerDay?: number;
+    isProRepro?: boolean;
   }
   
   export interface TemplateStats {

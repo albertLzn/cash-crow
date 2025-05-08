@@ -123,7 +123,8 @@ export const generateDailyReport = async (
     roundingPrecision: 2,
     preferExactMatch: true,
     allowNewOrderTypes: false,
-    maxIterations: 1000
+    maxIterations: 1000,
+    templateFidelity: 1,
   };
   
   const algorithmSettings = {

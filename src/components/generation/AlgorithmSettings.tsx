@@ -37,7 +37,8 @@ const AlgorithmSettings: React.FC<AlgorithmSettingsProps> = ({
       roundingPrecision: 2,
       preferExactMatch: true,
       allowNewOrderTypes: false,
-      maxIterations: 1000
+      maxIterations: 1000,
+      templateFidelity: 1
     });
   };
   
@@ -109,6 +110,44 @@ const AlgorithmSettings: React.FC<AlgorithmSettingsProps> = ({
             </Typography>
           </Box>
         </Box>
+
+        <Box sx={{ mb: 4 }}>
+  <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+    <Typography variant="subtitle1" fontWeight="medium">
+      Fidélité au template
+    </Typography>
+    <Tooltip title="Contrôle à quel point l'algorithme respecte strictement les fréquences des commandes définies dans le template. Une valeur élevée garantit une meilleure représentation des petites commandes fréquentes.">
+      <IconButton size="small" sx={{ ml: 1 }}>
+        <InfoIcon fontSize="small" />
+      </IconButton>
+    </Tooltip>
+  </Box>
+  
+  <Slider
+    value={settings.templateFidelity}
+    onChange={(_, value) => onChange({ templateFidelity: value as number })}
+    min={0}
+    max={1}
+    step={0.05}
+    marks={[
+      { value: 0, label: '0' },
+      { value: 0.5, label: '0.5' },
+      { value: 1, label: '1' }
+    ]}
+    valueLabelDisplay="auto"
+    valueLabelFormat={(value) => value.toFixed(2)}
+  />
+  
+  <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+    <Typography variant="caption" color="text.secondary">
+      Optimisé pour le montant
+    </Typography>
+    <Typography variant="caption" color="text.secondary">
+      Respecte les fréquences
+    </Typography>
+  </Box>
+</Box>
+
         
         <Divider sx={{ my: 3 }} />
         

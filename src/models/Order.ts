@@ -1,4 +1,4 @@
-export type PaymentMethod = 'cash' | 'card';
+export type PaymentMethod = 'cash' | 'card' | 'both';
 
 export interface Order {
   id: string;

@@ -93,6 +93,17 @@ export const distributeAmount = async (
     } else {
       selectedOrder = weightedRandomSelection(templateCopy.orders);
     }
+    let orderPaymentMethod: PaymentMethod;
+if (selectedOrder.paymentMethod) {
+  // Utiliser la méthode de paiement de la commande du template
+  orderPaymentMethod = selectedOrder.paymentMethod;
+} else if (paymentMethod === 'both') {
+  // Si pas définie dans le template et mode 'both', distribuer aléatoirement
+  orderPaymentMethod = Math.random() < 0.5 ? 'cash' : 'card';
+} else {
+  // Sinon utiliser la méthode demandée
+  orderPaymentMethod = paymentMethod as PaymentMethod;
+}
     
     // Appliquer une variance au montant de la commande seulement si le facteur n'est pas 0
     let orderAmount = selectedOrder.amount;
@@ -154,15 +165,6 @@ export const distributeAmount = async (
     // Gérer les erreurs d'arrondi qui pourraient laisser un très petit montant restant
     if (remainingAmount > 0 && remainingAmount < 0.01) {
       remainingAmount = 0;
-    }
-    
-    // Déterminer la méthode de paiement
-    let orderPaymentMethod: PaymentMethod;
-    if (paymentMethod === 'both') {
-      // Distribuer aléatoirement entre espèces et carte
-      orderPaymentMethod = Math.random() < 0.5 ? 'cash' : 'card';
-    } else {
-      orderPaymentMethod = paymentMethod as PaymentMethod;
     }
     
     // Ajouter ou mettre à jour le groupe de commandes

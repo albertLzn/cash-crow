@@ -49,7 +49,8 @@ export const GenerationProvider: React.FC<GenerationProviderProps> = ({ children
     roundingPrecision: 2,
     preferExactMatch: true,
     allowNewOrderTypes: false,
-    maxIterations: 1000
+    maxIterations: 1000,
+    templateFidelity: 1,
   });
 
   // Charger les rapports au démarrage
