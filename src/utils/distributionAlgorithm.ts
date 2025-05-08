@@ -4,24 +4,28 @@ import { Order, OrderGroup, PaymentMethod } from '../models/Order';
 import { AlgorithmSettings } from '../models/DailyReport';
 import { cloneDeep } from 'lodash';
 
-/**
- * Interface pour les résultats de la distribution
- */
 interface DistributionResult {
   orders: Order[];
   orderGroups: OrderGroup[];
 }
 
-/**
- * Distribue un montant total en commandes individuelles basées sur un template
- */
+function determineCategory(amount: number): string {
+  if ((amount % 0.2 === 0 || amount % 0.5 === 0) && amount >= 0.2 && amount <= 0.5) return 'Ph';
+  if (amount >= 5 && amount <= 30 && amount % 5 === 0) return 'CV';
+  if (amount >= 1 && amount <= 5 && amount % 1 === 0) return 'SC';
+  if (amount >= 5 && amount <= 7 && amount % 5 === 0) return 'Pl';
+  if (amount % 0.25 === 0 || amount % 0.3 === 0) return 'IMP';
+  if (amount % 5 === 0 || amount % 10 === 0) return 'D';
+  return '';
+}
+ 
+
 export const distributeAmount = async (
   targetAmount: number,
   template: Template,
   paymentMethod: 'cash' | 'card' | 'both',
   settings: AlgorithmSettings
 ): Promise<DistributionResult> => {
-  // Cloner le template pour ne pas le modifier
   const templateCopy = cloneDeep(template);
   
   // Trouver le montant minimum dans le template pour établir une limite inférieure
@@ -171,7 +175,13 @@ if (selectedOrder.paymentMethod) {
     const existingGroupIndex = orderGroups.findIndex(
       g => Math.abs(g.amount - orderAmount) < 0.01 && g.paymentMethod === orderPaymentMethod
     );
-    
+    let description = selectedOrder.description;
+  if (templateCopy.isProRepro) {
+    const category = determineCategory(orderAmount);
+    if (category) {
+      description = category;
+    }
+  }
     if (existingGroupIndex >= 0) {
       orderGroups[existingGroupIndex].count++;
     } else {
@@ -179,7 +189,7 @@ if (selectedOrder.paymentMethod) {
         amount: orderAmount,
         count: 1,
         paymentMethod: orderPaymentMethod,
-        description: selectedOrder.description
+        description: description
       });
     }
   }
